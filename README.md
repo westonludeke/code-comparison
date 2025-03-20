@@ -105,6 +105,29 @@ Ensure you have the following installed:
 6. **Visit the app**:
    Open your browser and go to `http://localhost:5173`.
 
+## Database Configuration
+
+### Local Development
+For local development, the application connects to a local MongoDB instance.
+Make sure you have MongoDB installed and running locally at the default port (27017).
+
+### Production Deployment on Render
+When deploying to Render, you'll need to configure the following environment variables:
+
+1. `NODE_ENV` = `production`
+2. `MONGODB_ATLAS_URI` = `mongodb+srv://<username>:<password>@<cluster>.mongodb.net/code_comparison?retryWrites=true&w=majority`
+3. `JWT_ACCESS_SECRET` = `your-secure-access-secret-key`
+4. `JWT_REFRESH_SECRET` = `your-secure-refresh-secret-key`
+
+#### Steps to set environment variables on Render:
+1. Go to your Render dashboard
+2. Select your web service
+3. Go to the "Environment" tab
+4. Add the above key-value pairs
+5. Click "Save Changes"
+
+This configuration ensures that when the app is deployed on Render, it will connect to your MongoDB Atlas cluster instead of trying to connect to a local MongoDB instance.
+
 ### License
 
 The project is proprietary. Copyright (c) 2024.

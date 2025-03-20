@@ -7,12 +7,17 @@ const MongoStore = require('connect-mongo');
 const basicRoutes = require("./routes/index");
 const authRoutes = require("./routes/authRoutes");
 const snippetRoutes = require("./routes/snippetRoutes");
-const compareRoutes = require("./routes/compareRoutes"); // Added new import for compare routes
+const compareRoutes = require("./routes/compareRoutes");
 const { connectDB } = require("./config/database");
 const cors = require("cors");
 
-if (!process.env.DATABASE_URL) {
-  console.error("Error: DATABASE_URL variables in .env missing.");
+// Check if database connection variables are present
+const connectionString = process.env.NODE_ENV === 'production'
+  ? process.env.MONGODB_ATLAS_URI
+  : process.env.MONGODB_LOCAL_URI;
+
+if (!connectionString) {
+  console.error("Error: Database connection string is missing in .env file.");
   process.exit(-1);
 }
 
@@ -42,7 +47,7 @@ app.use('/api/auth', authRoutes);
 // Snippet Routes
 app.use('/api/snippets', snippetRoutes);
 // Compare Routes
-app.use('/api/compare', compareRoutes); // Added new route for code comparison
+app.use('/api/compare', compareRoutes);
 
 // If no routes handled the request, it's a 404
 app.use((req, res, next) => {
@@ -57,5 +62,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port} in ${process.env.NODE_ENV || 'development'} mode`);
 });
