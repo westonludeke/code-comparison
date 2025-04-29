@@ -62,7 +62,7 @@ export function CodeComparison() {
 
     try {
       setLoading(true);
-      const response = await saveCodeSnippet({ name: snippetName, code: originalCode });
+      await saveCodeSnippet({ name: snippetName, code: originalCode });
       setShowSaveDialog(false);
       setSnippetName('');
       toast({

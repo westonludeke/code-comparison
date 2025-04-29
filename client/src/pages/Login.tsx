@@ -31,17 +31,22 @@ export function Login() {
   const onSubmit = async (data: LoginForm) => {
     try {
       setLoading(true)
-      await login(data.email, data.password);
+      await login(data.email, data.password)
       toast({
         title: "Success",
         description: "Logged in successfully",
       })
       navigate("/")
-    } catch (error) {
+    } catch (error: unknown) {
+      let errorMessage = "An unexpected error occurred"
+      if (error instanceof Error) {
+        errorMessage = error.message
+      }
+
       toast({
         variant: "destructive",
         title: "Error",
-        description: error?.message,
+        description: errorMessage,
       })
     } finally {
       setLoading(false)
