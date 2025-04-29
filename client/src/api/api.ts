@@ -1,4 +1,8 @@
-import axios, { AxiosRequestConfig, AxiosError } from 'axios';
+import axios, {
+  AxiosError,
+  InternalAxiosRequestConfig,
+  AxiosRequestConfig,
+} from 'axios';
 
 const api = axios.create({
   baseURL: '/api',
@@ -12,8 +16,9 @@ const api = axios.create({
 
 let accessToken: string | null = null;
 
+// Request interceptor
 api.interceptors.request.use(
-  (config: AxiosRequestConfig): AxiosRequestConfig => {
+  (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
     if (!accessToken) {
       accessToken = localStorage.getItem('accessToken');
       console.log('Retrieved token from localStorage:', accessToken);
@@ -29,13 +34,20 @@ api.interceptors.request.use(
   (error: AxiosError): Promise<AxiosError> => Promise.reject(error)
 );
 
+// Response interceptor
 api.interceptors.response.use(
   (response) => response,
-  async (error: AxiosError): Promise<any> => {
+  async (error: unknown): Promise<any> => {
+    if (!axios.isAxiosError(error)) {
+      return Promise.reject(error);
+    }
+
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-    // Check for 403 errors as well, not just 401
-    if ((error.response?.status === 401 || error.response?.status === 403) && !originalRequest._retry) {
+    if (
+      (error.response?.status === 401 || error.response?.status === 403) &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
 
       try {
@@ -46,12 +58,13 @@ api.interceptors.response.use(
 
         const { data } = await axios.post('/api/auth/refresh', { refreshToken });
         accessToken = data.accessToken;
-        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('accessToken', accessToken || '');
         localStorage.setItem('refreshToken', data.refreshToken);
 
         if (originalRequest.headers) {
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         }
+
         return api(originalRequest);
       } catch (err) {
         console.error('Token refresh failed:', err);
