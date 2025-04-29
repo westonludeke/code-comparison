@@ -1,80 +1,81 @@
 # Code Comparison
 
-A web app akin to DiffChecker designed for examining differences in various code types, such as JavaScript, JSON, and Markdown. Users can input two code snippets, compare them side-by-side, save and load snippets, and name them for easy reference in future comparisons.
+Code Comparison is a full-stack web application similar to DiffChecker, designed for comparing code snippets side-by-side. It supports various formats including JavaScript, JSON, and Markdown. Users can register, log in, paste two snippets of code, view inline differences, and save/load snippets for future reference.
 
-## Overview
+The application was built using the MERN stack and is deployed on Render.
 
-The Code Comparison app is divided into two main parts: the frontend and the backend:
+---
 
-### Architecture and Technologies
+## 🚀 Live Demo
 
-**Frontend:**
-- **ReactJS:** Highly responsive user interface within the `client/` folder.
-- **Vite:** Modern tool for faster development in the `client/` folder.
-- **shadcn-ui & Tailwind CSS:** For consistent and stylish UI components.
-- **React Router:** Client-side routing with components in `client/src/pages/` & `client/src/components/`.
-- **Mock Data:** All API requests are mocked during frontend development.
+- [https://code-comparison-frontend.onrender.com](https://code-comparison-frontend.onrender.com)
+> ⚠️ This app is hosted on Render's free tier, so it may take a few seconds to wake up on first load.
 
-**Backend:**
-- **ExpressJS:** Provides REST API endpoints within the `server/` folder.
-- **MongoDB & Mongoose:** Used for data storage and management.
-- **JWT Authentication:** Secure token-based user authentication using bearer tokens.
+---
 
-### Project Structure
+## 🧱 Tech Stack
+
+### 🖥️ Frontend (in `/client`)
+- **React + Vite**: Fast and modern frontend setup
+- **shadcn/ui + Tailwind CSS**: Component styling and theming
+- **React Router**: Client-side routing
+- **Axios**: For HTTP requests
+- **Monaco Editor**: Code editing experience
+- **Zod + React Hook Form**: Input validation
+
+### 🛠️ Backend (in `/server`)
+- **Express.js**: RESTful API
+- **MongoDB + Mongoose**: Database for users and snippets
+- **JWT Auth**: Secure login and token-based authentication
+
+---
+
+## 📁 Project Structure
 
 ```
 code_comparison/
-├── client/                # Frontend source files
-│   ├── public/            # Static assets
-│   ├── src/               # Source code
-│   │   ├── api/           # API requests handling
-│   │   ├── components/    # React components
-│   │   ├── contexts/      # Context providers
-│   │   ├── hooks/         # Custom hooks
-│   │   ├── pages/         # Page components
-│   │   ├── App.tsx        # Main App component
-│   │   ├── main.tsx       # Entry point
-├── server/                # Backend source files
-│   ├── config/            # Database configurations
-│   ├── models/            # Mongoose models
-│   ├── routes/            # API endpoints
-│   ├── services/          # Service layers
-│   ├── utils/             # Utility functions
-│   ├── server.js          # Server entry point
-└── README.md              # Project documentation
+├── client/              # React frontend
+│   ├── src/
+│   │   ├── api/         # Axios requests
+│   │   ├── components/  # Reusable UI
+│   │   ├── pages/       # Route-based views
+│   │   └── ...          # Context, hooks, etc.
+├── server/              # Express backend
+│   ├── routes/          # API routes
+│   ├── models/          # Mongoose schemas
+│   └── ...              # Config, utils, server.js
 ```
 
-## Features
+---
 
-### Text Comparison
-- **Input Areas:** Two text boxes for Original Code and Changed Code.
-- **Comparison Button:** Highlights differences inline when clicked.
+## ✨ Features
 
-### Save and Load Snippets
-- **Save Button:** Saves the Original Code; users can name the snippet.
-- **Load Button:** Retrieves saved snippets for future comparisons.
+- 🧠 **Code Diff**: Compare original vs modified code visually
+- 💾 **Save Snippets**: Name and persist snippets to MongoDB
+- 📂 **Load Snippets**: Quickly re-apply saved code for new comparisons
+- 🔐 **Authentication**: Register/login with secure JWT tokens
 
-### Database
-- **MongoDB & Mongoose:** Snippets and user data are saved and managed in MongoDB.
+---
 
-## Getting Started
+## 🧪 Getting Started (Local Dev)
 
-### Requirements
-Ensure you have the following installed:
-- **Node.js** (v14 or later)
-- **npm** (v6 or later)
-- **MongoDB** (local instance or cloud)
+### ✅ Requirements
 
-### Quickstart
+- Node.js (v16+ recommended)
+- npm
+- MongoDB (local or MongoDB Atlas)
 
-1. **Clone the repository**:
+### 📦 Setup
+
+1. **Clone the repo**:
    ```sh
-   git clone https://github.com/your-repo/code_comparison.git
-   cd code_comparison
+   git clone https://github.com/your-username/code-comparison.git
+   cd code-comparison
    ```
 
-2. **Setup environment variables**:
-   Create a `.env` file in the `server/` folder and add the following:
+2. **Set up backend environment**:
+   Create a `.env` file inside the `server/` directory:
+
    ```env
    PORT=3000
    DATABASE_URL=mongodb://localhost:27017/code_comparison
@@ -83,28 +84,43 @@ Ensure you have the following installed:
    ```
 
 3. **Install dependencies**:
-   ```sh
-   # For the backend
-   cd server
-   npm install
-   # For the frontend
-   cd ../client
-   npm install
+
+   ```bash
+   cd server && npm install
+   cd ../client && npm install
    ```
 
-4. **Start the MongoDB server** (if using a local instance):
+4. **Start MongoDB** (if using local):
+
    ```sh
    mongod
    ```
 
-5. **Run both backend and frontend with a single command**:
-   ```sh
+5. **Run app locally**:
+
+   From project root:
+
+   ```bash
    npm run start
    ```
 
-6. **Visit the app**:
-   Open your browser and go to `http://localhost:5173`.
+   This uses `concurrently` to run both frontend and backend.
 
-### License
+6. **Access app locally**:
 
-The project is proprietary. Copyright (c) 2024.
+   Visit: [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 🌐 Deploying to Production
+
+This app is deployed to **Render**. You’ll need:
+
+- A Render Web Service for `/server`
+- A Render Static Site for `/client`
+- A cloud MongoDB cluster (MongoDB Atlas)
+- Environment variables for both services (e.g. `VITE_API_URL` in frontend)
+
+## 📄 License
+
+This project is licensed under the [MIT License](./LICENSE).
